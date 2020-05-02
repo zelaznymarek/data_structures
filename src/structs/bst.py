@@ -73,25 +73,26 @@ class BST:
             self.root = self.delete_node(data, self.root)
 
     def delete_node(self, data, node):
+        print(f'Current value {node.data}')
         if not node:
             return node
 
         if data < node.data:
-            node.left_node = self.delete_node(data, node.left_node)
+            node.left_child = self.delete_node(data, node.left_child)
         elif data > node.data:
-            node.right_node = self.delete_node(data, node.right_node)
+            node.right_child = self.delete_node(data, node.right_child)
         else:
-            if not all([node.left_node, node.right_node]):
-                print('Removing a leaf')
+            if all([not node.left_child, not node.right_child]):
+                print('Removing leaf node')
                 del node
                 return None
             elif node.left_child:
-                print('Removing a node with single left child')
+                print('Removing node with left child only')
                 temp_node = node.left_child
                 del node
                 return temp_node
             elif node.right_child:
-                print('Removing a node with single right child')
+                print('Removing node with right child only')
                 temp_node = node.right_child
                 del node
                 return temp_node
@@ -99,7 +100,7 @@ class BST:
             print('Removing node with two children')
             temp_node = self.get_predecessor(node.left_child)
             node.data = temp_node.data
-            node.left_child = self.delete_node(temp_node.data, node.left_child)
+            node.left_child = self.delete_node(temp_node.data, node.left_node)
 
         return node
 
@@ -130,3 +131,9 @@ print(bst.root.left_child.right_child.data == 1)
 
 print(bst.max_value(bst.root.left_child) == 1)
 print(bst.min_value(bst.root.right_child) == 10)
+
+bst.traverse()
+
+bst.delete(10)
+
+bst.traverse()
