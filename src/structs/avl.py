@@ -39,6 +39,67 @@ class AVL:
 
         return self.settle_violation(data, node)
 
+    def delete(self, data):
+        if self.root:
+            self.root = self.delete_node(data, self.root)
+
+    def delete_node(self, data, node):
+        if not node:
+            print(f'Value {data} not found')
+            return node
+
+        if data < node.data:
+            node.left_child = self.delete_node(data, node.left_child)
+        elif data > node.data:
+            node.right_child = self.delete_node(data, node.right_child)
+        else:
+            if all([not node.left_child, not node.right_child]):
+                print('Removing leaf node')
+                del node
+                return None
+            elif node.left_child:
+                print('Removing node with left child only')
+                temp_node = node.left_child
+                del node
+                return temp_node
+            elif node.right_child:
+                print('Removing node with right child only')
+                temp_node = node.right_child
+                del node
+                return temp_node
+
+            print('Removing node with two children')
+            temp_node = self.get_predecessor(node.left_child)
+            node.data = temp_node.data
+            node.left_child = self.delete_node(temp_node.data, node.left_node)
+
+        node.height = self.calculate_height(node)
+
+        balance = self.calculate_balance(node)
+
+        if balance > 1 and self.calculate_balance(node.left_child) >= 0:
+            print('Left left heavy situation')
+            return self.rotate_right(node)
+        if balance < -1 and self.calculate_balance(node.right_child) <= 0:
+            print('Right right heavy situation')
+            return self.rotate_left(node)
+        if balance > 1 and self.calculate_balance(node.left_child) < 0:
+            print('Left right heavy situation')
+            node.left_child = self.rotate_left(node.left_child)
+            return self.rotate_right(node)
+        if balance < -1 and self.calculate_balance(node.right) > 0:
+            print('Right left heavy situation')
+            node.right_child = self.rotate_right(node.right_child)
+            return self.rotate_left(node)
+
+        return node
+
+    def get_predecessor(self, node):
+        if node.right_child:
+            return self.get_predecessor(node.right_child)
+
+        return node
+
     def settle_violation(self, data, node):
         balance = self.calculate_balance(node)
 
@@ -176,3 +237,18 @@ print(avl_rl.root.right_child.data == 5)
 
 print('Expected traverse: 1, 2, 5')
 avl_rl.traverse()
+
+avl = AVL()
+
+avl.insert(1)
+avl.insert(2)
+avl.insert(3)
+avl.insert(4)
+avl.insert(5)
+avl.insert(6)
+
+avl.delete(5)
+
+print(avl.root.right_child.data == 6)
+
+avl.delete(11)
