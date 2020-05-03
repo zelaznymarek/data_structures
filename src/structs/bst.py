@@ -73,7 +73,6 @@ class BST:
             self.root = self.delete_node(data, self.root)
 
     def delete_node(self, data, node):
-        print(f'Current value {node.data}')
         if not node:
             return node
 
