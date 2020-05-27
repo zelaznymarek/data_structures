@@ -64,6 +64,42 @@ def swap(items, index_1, index_2):
     return items
 
 
+def merge_sort(items):
+    if len(items) == 1:
+        return
+
+    middle = len(items) // 2
+
+    left = items[:middle]
+    right = items[middle:]
+
+    merge_sort(left)
+    merge_sort(right)
+
+    i = 0
+    j = 0
+    k = 0
+
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            items[k] = left[i]
+            i += 1
+        else:
+            items[k] = right[j]
+            j += 1
+        k += 1
+
+    while i < len(left):
+        items[k] = left[i]
+        i += 1
+        k += 1
+
+    while j < len(right):
+        items[k] = right[j]
+        j += 1
+        k += 1
+
+
 def get_numbers():
     return [3, 8, 1, -4, 0, 20, -15, 7]
 
@@ -81,4 +117,8 @@ for alg in algs:
 
 numbers = get_numbers()
 quick_sort(numbers, 0, len(numbers) - 1)
+print(numbers == expected)
+
+numbers = get_numbers()
+merge_sort(numbers)
 print(numbers == expected)
