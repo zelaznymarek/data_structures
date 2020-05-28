@@ -76,9 +76,7 @@ def merge_sort(items):
     merge_sort(left)
     merge_sort(right)
 
-    i = 0
-    j = 0
-    k = 0
+    i = j = k = 0
 
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
@@ -100,16 +98,47 @@ def merge_sort(items):
         k += 1
 
 
+def count_sort(items):
+    def get_min_max(items):
+        min_ = max_ = items[0]
+
+        for i in items:
+            if i < min_:
+                min_ = i
+            if i > max_:
+                max_ = i
+
+        return min_, max_
+
+    min, max = get_min_max(items)
+
+    count_array = [0] * (max - min + 1)
+
+    offset = abs(min) if min < 0 else 0
+
+    for i in items:
+        count_array[i + offset] += 1
+
+    result = []
+
+    for i, v in enumerate(count_array):
+        if v > 0:
+            result = result + ([i - offset] * v)
+
+    return result
+
+
 def get_numbers():
-    return [3, 8, 1, -4, 0, 20, -15, 7]
+    return [3, 8, 1, -4, 0, 20, -15, 7, -4, 8, 8]
 
 
-expected = [-15, -4, 0, 1, 3, 7, 8, 20]
+expected = [-15, -4, -4, 0, 1, 3, 7, 8, 8, 8, 20]
 
 algs = [
     bubble_sort,
     selection_sort,
-    insertion_sort
+    insertion_sort,
+    count_sort
 ]
 
 for alg in algs:
