@@ -26,3 +26,25 @@ print(case_1 == expected_1)
 
 reverse(case_2)
 print(case_2 == expected_2)
+
+
+# Palindrome problem
+def is_palindrome(word):
+    i = 0
+    j = len(word) - 1
+
+    while i < j:
+        if word[i] != word[j]:
+            return False
+
+        i += 1
+        j -= 1
+
+    return True
+
+
+palindrome = 'aabcccbaa'
+not_palindrome = 'aabccbbaa'
+
+print(is_palindrome(palindrome) is True)
+print(is_palindrome(not_palindrome) is False)
