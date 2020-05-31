@@ -109,7 +109,7 @@ print(is_anagram(subject, not_anagram) is False)
 
 
 # Largest sum of subarray in O(N) time complexity
-def largest_sum(arr):
+def subarray_with_largest_sum(arr):
     start = end = None
     max_ = arr[0]
     sum_ = 0
@@ -119,10 +119,9 @@ def largest_sum(arr):
         if arr[i] > max_:
             max_ = arr[i]
 
-        if arr[i] <= 0 and start is None:
-            continue
-
         if start is None:
+            if arr[i] <= 0:
+                continue
             start = i
 
         end = i
@@ -143,4 +142,18 @@ def largest_sum(arr):
 
 
 numbers = [15, 10, -50, 12, -3, 0, 8, 10, -10]
-print(largest_sum(numbers) == [12, -3, 0, 8, 10])
+print(subarray_with_largest_sum(numbers) == [12, -3, 0, 8, 10])
+
+
+def largest_sum(arr):
+    sum_ = 0
+    biggest = 0
+
+    for i in arr:
+        sum_ = max(i, sum_ + i)
+        biggest = max(sum_, biggest)
+
+    return biggest
+
+
+print(largest_sum(numbers) == 27)
