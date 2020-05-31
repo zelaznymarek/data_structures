@@ -48,3 +48,99 @@ not_palindrome = 'aabccbbaa'
 
 print(is_palindrome(palindrome) is True)
 print(is_palindrome(not_palindrome) is False)
+
+
+# Reverse integer problem
+def reverse_int(number):
+    reversed = 0
+    while number > 0:
+        rem = number % 10
+        number //= 10
+        reversed = reversed * 10 + rem
+
+    return reversed
+
+
+n_1 = 123045
+n_2 = 1000000
+n_3 = 1
+n_4 = 0
+
+print(reverse_int(n_1) == 540321)
+print(reverse_int(n_2) == 1)
+print(reverse_int(n_3) == 1)
+print(reverse_int(n_4) == 0)
+
+
+# Duplicates in array problem
+# find duplicates in a one-dimensional array of integers in O(N) running time where: 0 < the integer values < length of the array
+def get_duplicate(arr):
+    for i in arr:
+        if arr[abs(i)] >= 0:
+            arr[abs(i)] *= -1
+        else:
+            print(f'Duplicate: {abs(i)}')
+
+
+dups = [1, 2, 4, 3, 1, 2]
+no_dups = [0, 1, 2, 3, 4, 5]
+
+# Expected duplicates: 1, 2
+get_duplicate(dups)
+
+# Expected duplicates: None
+get_duplicate(no_dups)
+
+
+# Anagram problem
+def is_anagram(word_1, word_2):
+    if len(word_1) != len(word_2):
+        return False
+
+    return sorted(word_1) == sorted(word_2)
+
+
+subject = 'dupa'
+anagram = 'upad'
+not_anagram = 'upal'
+
+print(is_anagram(subject, anagram) is True)
+print(is_anagram(subject, not_anagram) is False)
+
+
+# Largest sum of subarray in O(N) time complexity
+def largest_sum(arr):
+    start = end = None
+    max_ = arr[0]
+    sum_ = 0
+    biggest = [0, start, end]
+
+    for i in range(len(arr)):
+        if arr[i] > max_:
+            max_ = arr[i]
+
+        if arr[i] <= 0 and start is None:
+            continue
+
+        if start is None:
+            start = i
+
+        end = i
+        sum_ += arr[i]
+
+        if sum_ > biggest[0]:
+            biggest = [sum_, start, end]
+
+        elif sum_ > 0:
+            continue
+        else:
+            start = end = None
+            sum_ = 0
+
+    if max_ > biggest[0]:
+        return [max_]
+    return arr[biggest[1]:biggest[2] + 1]
+
+
+numbers = [15, 10, -50, 12, -3, 0, 8, 10, -10]
+print(largest_sum(numbers) == [12, -3, 0, 8, 10])
